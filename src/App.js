@@ -1,4 +1,4 @@
-//import './App.css';
+import './App.css';
 import React from 'react';
 //import ReactDOM from 'react-dom';
 //import jsondata from './sm_damage.json';
@@ -85,7 +85,10 @@ function minAmmoMB2(my_missiles, my_supers, beamCombo){
 }
 
 function minAmmoMB(my_missiles, my_supers, beamCombo){
+//	console.log(my_missiles);
+//	console.log(my_supers);
 	let minAmmoMB1Results = minAmmoMB1(my_missiles, my_supers);
+	console.log(minAmmoMB1Results);
 	let haveCharge = (beamCombo[0]==1 ? true : false );
 	
 	if(minAmmoMB1Results[0]==0 && minAmmoMB1Results[1]==0 && minAmmoMB1Results[2]==0 && minAmmoMB1Results[3]==0){
@@ -161,8 +164,9 @@ function minAmmoMB1(my_missiles, my_supers){
 				}
 			}
 		}
-		return result;
+//		console.log(result);
 	}
+	return result;
 }
 
 function App() {
@@ -186,12 +190,18 @@ class DamageCalculator extends React.Component {
 			beamCombo: [0,0,0,0,0],
 			ammoCount: [0,0,0],
 			sliderValues: [0,0],
-			checkboxValues: [0,0]
+			checkboxValues: [0,0],
+			resultsDisplay: "ridley",
+			mbDisplay: "mb1"
 		}
 		this.handleToggleBeam = this.handleToggleBeam.bind(this);
 		this.handleAmmoInput = this.handleAmmoInput.bind(this);
 		this.handleSliderInput = this.handleSliderInput.bind(this);
 		this.handleCheckboxInput = this.handleCheckboxInput.bind(this);
+		this.handleResultsDisplayChange = this.handleResultsDisplayChange.bind(this);
+		this.handleMBDisplayChange = this.handleMBDisplayChange.bind(this);
+
+
 		this.computeDamageRidley = this.computeDamageRidley.bind(this);
 		this.computeDamageMB = this.computeDamageMB.bind(this);
 	}
@@ -296,6 +306,18 @@ class DamageCalculator extends React.Component {
 		});
 	};
 	
+	handleResultsDisplayChange(enemy){
+		this.setState({
+		    resultsDisplay: enemy
+		});
+	}
+	
+	handleMBDisplayChange(enemy){
+		this.setState({
+		    mbDisplay: enemy
+		});
+	}
+	
 	
 	computeDamageRidley(){
 		
@@ -319,7 +341,9 @@ class DamageCalculator extends React.Component {
 		          	onToggleBeam={this.handleToggleBeam} 
 					onAmmoInput={this.handleAmmoInput} 
 					onSliderInput={this.handleSliderInput} 
-					onCheckboxInput={this.handleCheckboxInput}
+					onCheckboxInput={this.handleCheckboxInput} 
+					onResultsDisplayChange={this.handleResultsDisplayChange} 
+					resultsDisplay={this.state.resultsDisplay}
 				 />
 				<ResultsContainer
 					beamCombo={this.state.beamCombo} 
@@ -327,7 +351,10 @@ class DamageCalculator extends React.Component {
 					sliderValues={this.state.sliderValues} 
 					checkboxValues={this.state.checkboxValues} 
 					computeDamageRidley={this.computeDamageRidley} 
-					computeDamageMB={this.computeDamageMB}
+					computeDamageMB={this.computeDamageMB} 
+					resultsDisplay={this.state.resultsDisplay} 
+					onMBDisplayChange={this.handleMBDisplayChange} 
+					mbDisplay={this.state.mbDisplay}
 				 />
 			</div>
 		);
@@ -340,6 +367,10 @@ class PlayerInput extends React.Component {
 
 		return (
 			<div className="player_input">
+				<DisplaySwitcher 
+					onResultsDisplayChange={this.props.onResultsDisplayChange} 
+					resultsDisplay={this.props.resultsDisplay} 
+				 />
 				<AmmoInput
 					ammoCount={this.props.ammoCount} 
 					onAmmoInput={this.props.onAmmoInput} 
@@ -363,22 +394,31 @@ class PlayerInput extends React.Component {
 class ResultsContainer extends React.Component {
 	render(){
 //		console.log("RESULTSCONTAINER");
-//		console.log(this.props);
-		return (
-			<div className="results_container">
-				<ResultsRidley
-					beamCombo={this.props.beamCombo} 
-					ammoCount={this.props.ammoCount} 
-					sliderValues={this.props.sliderValues} 
-					checkboxValues={this.props.checkboxValues} 
-					sliderValues={this.props.sliderValues}
-				 />
+		console.log(this.props);
+		let resultsHTML = (
+			<ResultsRidley
+				beamCombo={this.props.beamCombo} 
+				ammoCount={this.props.ammoCount} 
+				sliderValues={this.props.sliderValues} 
+				checkboxValues={this.props.checkboxValues} 
+				sliderValues={this.props.sliderValues}
+			 />	
+		);
+		if(this.props.resultsDisplay == "mb"){
+			resultsHTML = (
 				<ResultsMB
 					beamCombo={this.props.beamCombo} 
 					ammoCount={this.props.ammoCount} 
 					sliderValues={this.props.sliderValues} 
 					checkboxValues={this.props.checkboxValues} 
+					onMBDisplayChange={this.props.onMBDisplayChange} 
+					mbDisplay={this.props.mbDisplay}
 				 />
+			);
+		}
+		return (
+			<div className="results_container">
+				{resultsHTML}
 			</div>
 		);
 	}
@@ -408,6 +448,72 @@ class AmmoInput extends React.Component {
 		);
 	}
 }
+
+class DisplaySwitcher extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleResultsDisplayChange = this.handleResultsDisplayChange.bind(this);
+
+	}
+
+	handleResultsDisplayChange(e){
+//		console.log(e.target.name);
+		this.props.onResultsDisplayChange(e.target.name);
+//		console.log(e);
+	}
+
+	render(){
+
+		let ridleyClass = "ridley_button";
+		let mbClass = "mb_button";
+		if(this.props.resultsDisplay == "ridley"){
+			ridleyClass = "ridley_button active"
+		}
+		if(this.props.resultsDisplay == "mb"){
+			mbClass = "mb_button active"
+		}
+
+		return (
+			<div className="display_switcher">
+				<button name="ridley" className={ridleyClass} onClick={this.handleResultsDisplayChange.bind(this)}>Ridley</button>
+				<button name="mb" className={mbClass} onClick={this.handleResultsDisplayChange.bind(this)}>Mother Brain</button>
+			</div>
+		);
+	}
+}
+
+class MBSwitcher extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleMBDisplayChange = this.handleMBDisplayChange.bind(this);
+
+	}
+
+	handleMBDisplayChange(e){
+		this.props.onMBDisplayChange(e.target.name);
+//		console.log(e);
+	}
+
+	render(){
+
+		let mb1Class = "mb1_button";
+		let mb2Class = "mb2_button";
+		if(this.props.mbDisplay == "mb1"){
+			mb1Class = "mb1_button active"
+		}
+		if(this.props.mbDisplay == "mb2"){
+			mb2Class = "mb2_button active"
+		}
+
+		return (
+			<div className="mb_switcher">
+				<button name="mb1" className={mb1Class} onClick={this.handleMBDisplayChange.bind(this)}>Mother Brain 1</button>
+				<button name="mb2" className={mb2Class} onClick={this.handleMBDisplayChange.bind(this)}>Mother Brain 2</button>
+			</div>
+		);
+	}
+}
+
 
 class BeamInput extends React.Component {
 	render(){
@@ -505,10 +611,42 @@ class BeamInputItem extends React.Component {
 	}
 
 	render(){
+		let activeClass = "";
+		switch(this.props.beam){
+			case "charge":
+				if(this.props.beamCombo[0] == 1){
+					activeClass	= " active";
+				}
+				break;
+			case "ice":
+				if(this.props.beamCombo[1] == 1){
+					activeClass	= " active";
+				}
+				break;
+			case "spazer":
+				if(this.props.beamCombo[2] == 1){
+					activeClass	= " active";
+				}
+				break;
+			case "wave":
+				if(this.props.beamCombo[3] == 1){
+					activeClass	= " active";
+				}
+				break;
+			case "plasma":
+				if(this.props.beamCombo[4] == 1){
+					activeClass	= " active";
+				}
+				break;
+			default:
+				console.log("switch case error");
+				break;
+		}
+		
 //		console.log(this.newClassName);
 		return (
 			<li className={this.props.beam}>
-				<button onClick={this.handleToggleBeam.bind(this)} type="button">{this.props.beam}</button>
+				<button className={this.props.beam+activeClass} onClick={this.handleToggleBeam.bind(this)} type="button">{this.props.beam}</button>
 			</li>
 		);
 	}
@@ -849,6 +987,7 @@ class ResultsMB extends React.Component {
 				willSurvive={false}
 			 />
 		);
+		console.log(this.props);
 		
 		if(willSurvive){
 //			console.log("surviveLoop");
@@ -859,7 +998,9 @@ class ResultsMB extends React.Component {
 					ammoCount={this.props.ammoCount} 
 					checkboxValues={this.props.checkboxValues}
 					sliderValues={this.props.sliderValues}
-					willSurvive={true}
+					willSurvive={true} 
+					onMBDisplayChange={this.props.onMBDisplayChange} 
+					mbDisplay={this.props.mbDisplay}
 				 />
 			);
 		}
@@ -942,9 +1083,34 @@ class ResultsMBLive extends React.Component {
 	// make button state
 	// add remove resultsmb1/2 classes on press
 	render(){
-
+		let mbContainer = (
+			<ResultsMB1
+				beamCombo={this.props.beamCombo} 
+				ammoCount={this.props.ammoCount}
+				checkboxValues={this.props.checkboxValues} 
+				willSurvive={true} 
+				ammoTotals={this.props.ammoTotals} 
+				enemy= "mb1"
+			 />
+		);
+		if(this.props.mbDisplay == "mb2"){
+			mbContainer = (
+				<ResultsMB2
+					beamCombo={this.props.beamCombo} 
+					ammoCount={this.props.ammoCount}
+					checkboxValues={this.props.checkboxValues} 
+					willSurvive={true} 
+					ammoTotals={this.props.ammoTotals} 
+					enemy= "mb2"
+				 />
+			);
+		}
 		return (
 			<div className="results_mb">
+				<MBSwitcher 
+					onMBDisplayChange={this.props.onMBDisplayChange} 
+					mbDisplay={this.props.mbDisplay} 
+				/>
 				<LoadoutContainer
 					beamCombo={this.props.beamCombo} 
 					ammoCount={this.props.ammoCount}
@@ -955,22 +1121,7 @@ class ResultsMBLive extends React.Component {
 					sliderValues={this.props.sliderValues}
 				 />
 				<div className="mb_switcher"></div>
-				<ResultsMB1
-					beamCombo={this.props.beamCombo} 
-					ammoCount={this.props.ammoCount}
-					checkboxValues={this.props.checkboxValues} 
-					willSurvive={true} 
-					ammoTotals={this.props.ammoTotals} 
-					enemy= "mb1"
-				 />
-				<ResultsMB2
-					beamCombo={this.props.beamCombo} 
-					ammoCount={this.props.ammoCount}
-					checkboxValues={this.props.checkboxValues} 
-					willSurvive={true} 
-					ammoTotals={this.props.ammoTotals} 
-					enemy= "mb2"
-				 />
+				{mbContainer}
 			</div>
 		);
 	}
