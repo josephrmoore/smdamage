@@ -1,0 +1,143 @@
+{
+    "Beams": {
+        "Power" : {
+            "Damage" : 20
+        },
+        "Ice" : {
+            "Damage" : 30,
+            "Plus" : {
+                "Spazer" : {
+                    "Damage" : 60
+                },
+                "Wave" : {
+                    "Damage" : 60
+                },
+                "Plasma" : {
+                    "Damage" : 200
+                },
+                "SpazerWave" : {
+                    "Damage" : 100
+                },
+                "WavePlasma" : {
+                    "Damage" : 300
+                }
+            }
+        },
+        "Spazer" : {
+            "Damage" : 40,
+            "Plus" : {
+                "Ice" : {
+                    "Damage" : 60
+                },
+                "Wave" : {
+                    "Damage" : 70
+                },
+                "IceWave" : {
+                    "Damage" : 100
+                }
+            }
+        },
+        "Wave" : {
+            "Damage" : 50,
+            "Plus" : {
+                "Ice" : {
+                    "Damage" : 60
+                },
+                "Spazer" : {
+                    "Damage" : 70
+                },
+                "Plasma" : {
+                    "Damage" : 250
+                },
+                "IceSpazer" : {
+                    "Damage" : 100
+                },
+                "IcePlasma" : {
+                    "Damage" : 300
+                }
+            }
+        },
+        "Plasma" : {
+            "Damage" : 150,
+            "Plus" : {
+                "Ice" : {
+                    "Damage" : 200
+                },
+                "Wave" : {
+                    "Damage" : 250
+                },
+                "IceWave" : {
+                    "Damage" : 300
+                }
+            }
+            
+        },
+        "FullBeam" : {
+            "Damage" : 300
+        },
+        "Hyper" : {
+            "Damage" : 1000
+        },
+        "Charge" : {
+            "Multiplier" : 3
+        }
+    },
+    "GlitchBeams" : {
+        "Spacetime" : {
+            "Damage" : 90
+        },
+        "Chainsaw" : {
+            "Damage" : 150
+        },
+        "Murder" : {
+            "Damage" : 200
+        }
+    },
+    "Ammo" : {
+        "Missiles" : {
+            "Damage" : 100
+        },
+        "SuperMissiles" : {
+            "Damage" : 300
+        }
+    },
+    "Explosives" : {
+        "Bombs" : {
+            "Damage" : 30
+        },
+        "PowerBombs" : {
+            "Damage" : 200
+        }
+    },
+    "SpecialAttack" : {
+        "Ice" : {
+            "Damage" : 90
+        },
+        "Spazer" :{
+            "Damage" : 300
+        },
+        "Wave" : {
+            "Damage" : 300
+        },
+        "Plasma" : {
+            "Damage" : 300
+        }
+    },
+    "Other" : {
+        "Screw" : {
+            "Damage" : 2000
+        },
+        "PseudoScrew" : {
+            "Damage" : 200
+        },
+        "Shinespark" : {
+            "Damage" : 300
+        },
+        "BlueSuit" : {
+            "Damage" : 500
+        },
+        "SparkEchoes" : {
+            "Damage" : 4096
+        }
+    }
+}

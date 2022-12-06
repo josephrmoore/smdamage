@@ -949,7 +949,7 @@ class ResultsMBLive extends React.Component {
 					beamCombo={this.props.beamCombo} 
 					ammoCount={this.props.ammoCount}
 					ammoTotals={this.props.ammoTotals} 
-					enemy= "mb" 
+					enemy= "mb1" 
 					willSurvive={true} 
 					checkboxValues={this.props.checkboxValues}
 					sliderValues={this.props.sliderValues}
@@ -1353,23 +1353,8 @@ class ChargedShotsResult extends React.Component {
 	}
 }
 
-// function addClass(componentThis, newClass, targetClass){
-// 	var internals = componentThis._reactInternals;
-// 	console.log(internals);
-// 	if(internals.child){
-// 		console.log("has child");
-// 		var child = internals.child;
-// 		var classnames = child.memoizedProps.className;
-// 		if(classnames == targetClass){
-// 			child.memoizedProps.className = classnames+" "+newClass;
-// 		}
-// 	}
-// }
-
 class IfYouMiss extends React.Component {
 	render(){
-		
-//		addClass(this, "testo", "if_you_miss");
 		
 		let all_items = "";
 		let pbs = "";
