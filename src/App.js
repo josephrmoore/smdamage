@@ -172,9 +172,9 @@ function minAmmoMB1(my_missiles, my_supers){
 function App() {
 	return (
 		<div className="App">
-			<header className="app_header">
-				<img className="samus_img" src="" alt="Samus's S logo" />
-				<h1>Super Metroid Damage Calculator</h1>
+			<header className="app_header group">
+				<img className="samus_img" src="smlogo.png" alt="Samus's S logo" />
+				<h1>Ridley Damage Calculator</h1>
 			</header>
 			
 			<DamageCalculator />
@@ -364,6 +364,16 @@ class DamageCalculator extends React.Component {
 	
 class PlayerInput extends React.Component {
 	render(){
+		
+		/*
+				<ExtraInput
+					ammoCount={this.props.ammoCount} 
+					sliderValues={this.props.sliderValues} 
+					checkboxValues={this.props.checkboxValues} 
+					onSliderInput={this.props.onSliderInput} 
+					onCheckboxInput={this.props.onCheckboxInput}
+				 />
+*/
 
 		return (
 			<div className="player_input">
@@ -379,13 +389,7 @@ class PlayerInput extends React.Component {
 					beamCombo={this.props.beamCombo} 
 	          		onToggleBeam={this.props.onToggleBeam}
 				 />
-				<ExtraInput
-					ammoCount={this.props.ammoCount} 
-					sliderValues={this.props.sliderValues} 
-					checkboxValues={this.props.checkboxValues} 
-					onSliderInput={this.props.onSliderInput} 
-					onCheckboxInput={this.props.onCheckboxInput}
-				 />
+
 			</div>
 		);
 	}
@@ -426,6 +430,14 @@ class ResultsContainer extends React.Component {
 
 class AmmoInput extends React.Component {
 	render(){
+		
+		/*
+				<AmmoInputItem 
+					ammo="pbs" 
+					ammoCount={this.props.ammoCount} 
+					onAmmoInput={this.props.onAmmoInput}
+				 />
+*/
 
 		return (
 			<div className="ammo_input">
@@ -439,11 +451,7 @@ class AmmoInput extends React.Component {
 					ammoCount={this.props.ammoCount} 
 					onAmmoInput={this.props.onAmmoInput}
 				 />
-				<AmmoInputItem 
-					ammo="pbs" 
-					ammoCount={this.props.ammoCount} 
-					onAmmoInput={this.props.onAmmoInput}
-				 />
+
 			</div>
 		);
 	}
@@ -474,10 +482,13 @@ class DisplaySwitcher extends React.Component {
 		}
 
 		return (
+			<div></div>
+/*
 			<div className="display_switcher">
 				<button name="ridley" className={ridleyClass} onClick={this.handleResultsDisplayChange.bind(this)}>Ridley</button>
 				<button name="mb" className={mbClass} onClick={this.handleResultsDisplayChange.bind(this)}>Mother Brain</button>
 			</div>
+*/
 		);
 	}
 }
@@ -519,7 +530,7 @@ class BeamInput extends React.Component {
 	render(){
 
 		return (
-			<div className="beam_input">
+			<ul className="beam_input">
 				<BeamInputItem 
 					beam="charge" 
 					beamCombo={this.props.beamCombo} 
@@ -545,7 +556,7 @@ class BeamInput extends React.Component {
 					beamCombo={this.props.beamCombo} 
 	          		onToggleBeam={this.props.onToggleBeam}
 				 />
-			</div>
+			</ul>
 		);
 	}
 }
@@ -556,7 +567,7 @@ class ExtraInput extends React.Component {
 		return (
 			<div className="extra_input">
 				<ExtraInputItem 
-					weapon="pbs" 
+					weapon="PB" 
 					ammoCount={this.props.ammoCount} 
 					sliderValues={this.props.sliderValues} 
 					checkboxValues={this.props.checkboxValues} 
@@ -564,7 +575,7 @@ class ExtraInput extends React.Component {
 					onCheckboxInput={this.props.onCheckboxInput}
 				 />
 				<ExtraInputItem 
-					weapon="xfactor" 
+					weapon="X-Factor" 
 					ammoCount={this.props.ammoCount} 
 					sliderValues={this.props.sliderValues} 
 					checkboxValues={this.props.checkboxValues} 
@@ -799,12 +810,13 @@ class ResultsRidley extends React.Component {
 		}
 
 		return (
-			<div className="results_ridley">
-				<h2>Ridley</h2>
-				<DeathBanner
-					willSurvive={willSurvive} 
-				 />
-				<img className="ridley_side" src="" alt="Picture of Ridley from Super Metroid" />
+			<div className="results_ridley group">
+				<div className="dead_or_alive_ridley">
+				    <DeathBanner
+					    willSurvive={willSurvive} 
+				     />
+				    <img className="ridley_side" src="ridley.png" alt="Picture of Ridley from Super Metroid" />
+				</div>
 				<BossHP
 					enemy="Ridley" 
 					hp={boss}
@@ -1462,7 +1474,7 @@ class LoadoutItem extends React.Component {
 		
 
 		
-		let orTag = (<span className="block">or</span>);
+		let orTag = (<span className="block or">or</span>);
 		if(this.props.willSurvive){
 			orTag = "";
 		}
@@ -1482,7 +1494,7 @@ class LoadoutItem extends React.Component {
 
 class ChargedShotsResult extends React.Component {
 	render(){
-		let header_text = "If you only use charged shots";
+		let header_text = "If you only use charged shots it would take:";
 		// allow for mb1 text exception here
 		
 		var charge_damage = getChargeDamage(this.props.beamCombo);
